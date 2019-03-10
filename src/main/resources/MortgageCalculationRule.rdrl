@@ -1,0 +1,14 @@
+import java.lang.Number;
+import com.myspace.mortgage_app.Applicant;
+import com.myspace.mortgage_app.Application;
+import com.myspace.mortgage_app.Property;
+import com.myspace.mortgage_app.ValidationErrorDO;
+
+rule "MortgageCalculationRule"
+	dialect "mvel"
+	ruleflow-group "mortgagecalculation2"
+	when
+		application : Application( app : applicant, applicant.existingPayments < ( app.mthlyIncome ) )
+	then
+		application.setMortgageamount( ((0.6 * app.mthlyIncome) - app.existingPayments) * 12 * application.amortization );
+end
